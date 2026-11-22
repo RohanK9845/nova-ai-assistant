@@ -465,3 +465,189 @@
     display: none;
   }
 }
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backend-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.backend-status.connected .status-dot {
+  background: #22c55e;
+}
+
+.backend-status.disconnected .status-dot {
+  background: #ef4444;
+}
+
+.backend-status.checking .status-dot {
+  background: #eab308;
+}
+
+
+/* ================================
+   NOVA CONVERSATION INTERFACE
+================================ */
+
+/* Main chat layout */
+.chat-area {
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: hidden;
+  gap: 0;
+}
+
+/* Keep welcome screen centered */
+.welcome-content {
+  align-self: center;
+}
+
+/* Conversation scrolling area */
+.conversation-container {
+  width: 100%;
+  max-width: 900px;
+  flex: 1;
+  min-height: 0;
+  margin: 0 auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.conversation-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding: 15px 8px 25px;
+}
+
+/* Individual messages */
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: fit-content;
+  max-width: 85%;
+}
+
+.user-message {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.assistant-message {
+  align-self: flex-start;
+}
+
+/* Message avatars */
+.message-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--surface-hover);
+  color: var(--accent);
+}
+
+.user-message .message-avatar {
+  background: var(--accent);
+  color: white;
+}
+
+/* Message content */
+.message-content {
+  min-width: 0;
+  padding: 11px 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.user-message .message-content {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.message-author {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.user-message .message-author {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.message-content p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* NOVA loading indicator */
+.typing-indicator {
+  color: var(--muted);
+  animation: nova-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes nova-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Keep composer accessible at the bottom */
+.composer-container {
+  flex-shrink: 0;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+/* Conversation scrollbar */
+.conversation-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.conversation-container::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+/* Mobile conversation layout */
+@media (max-width: 700px) {
+  .chat-message {
+    max-width: 95%;
+  }
+
+  .conversation-messages {
+    gap: 18px;
+    padding: 10px 2px 20px;
+  }
+
+  .message-content {
+    padding: 10px 12px;
+  }
+}

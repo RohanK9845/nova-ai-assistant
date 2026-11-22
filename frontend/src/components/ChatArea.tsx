@@ -1,13 +1,66 @@
+
+import { useEffect, useRef } from 'react'
 import { Sparkles } from 'lucide-react'
+import ChatMessage from './ChatMessage'
+
+
+export interface Message {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+}
 
 interface ChatAreaProps {
+  messages: Message[]
+  isLoading: boolean
   onSuggestionSelect: (text: string) => void
 }
 
-function ChatArea({ onSuggestionSelect }: ChatAreaProps) {
+function ChatArea({
+  messages,
+  isLoading,
+  onSuggestionSelect,
+}: ChatAreaProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+  })
+}, [messages, isLoading])
+  if (messages.length > 0) {
+    return (
+      <div className="conversation-container">
+        <div className="conversation-messages">
+          {messages.map((message) => (
+            <ChatMessage
+              key={message.id}
+              role={message.role}
+              content={message.content}
+            />
+          ))}
+
+          {isLoading && (
+            <div className="chat-message assistant-message">
+              <div className="message-avatar">
+                <Sparkles size={18} />
+              </div>
+
+              <div className="message-content">
+                <span className="message-author">NOVA</span>
+                <p className="typing-indicator">NOVA is thinking...</p>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="welcome-content">
-
       <div className="welcome-icon">
         <Sparkles size={30} />
       </div>
@@ -26,7 +79,6 @@ function ChatArea({ onSuggestionSelect }: ChatAreaProps) {
       </p>
 
       <div className="suggestion-grid">
-
         <button
           className="suggestion-card"
           onClick={() => onSuggestionSelect('Help me brainstorm a new project')}
@@ -70,7 +122,6 @@ function ChatArea({ onSuggestionSelect }: ChatAreaProps) {
             Extract insights from your files
           </span>
         </button>
-
       </div>
     </div>
   )
