@@ -1,3 +1,4 @@
+
 import {
   Sparkles,
   Plus,
@@ -8,15 +9,23 @@ import {
   ChevronDown,
 } from 'lucide-react'
 
+import type { Conversation } from '../services/chatService'
+
 interface SidebarProps {
   onNewChat: () => void
+  conversations: Conversation[]
+  activeConversationId: number | null
+  onSelectConversation: (id: number) => void
 }
 
-function Sidebar({ onNewChat }: SidebarProps) {
+function Sidebar({
+  onNewChat,
+  conversations,
+  activeConversationId,
+  onSelectConversation,
+}: SidebarProps) {
   return (
     <aside className="sidebar">
-
-      {/* Brand */}
       <div className="sidebar-header">
         <div className="brand">
           <div className="brand-icon">
@@ -30,20 +39,17 @@ function Sidebar({ onNewChat }: SidebarProps) {
         </button>
       </div>
 
-      {/* New conversation */}
       <button className="new-chat-button" onClick={onNewChat}>
         <Plus size={18} />
         <span>New conversation</span>
       </button>
 
-      {/* Search */}
       <div className="sidebar-search">
         <Search size={17} />
         <input placeholder="Search conversations" />
         <span className="shortcut">⌘ K</span>
       </div>
 
-      {/* Navigation */}
       <div className="sidebar-section">
         <p className="section-label">WORKSPACE</p>
 
@@ -53,16 +59,30 @@ function Sidebar({ onNewChat }: SidebarProps) {
         </button>
       </div>
 
-      {/* Recent conversations */}
       <div className="history-section">
         <p className="section-label">RECENT</p>
 
-        <div className="history-empty">
-          Your conversations will appear here.
-        </div>
+        {conversations.length === 0 ? (
+          <div className="history-empty">
+            Your conversations will appear here.
+          </div>
+        ) : (
+          conversations.map((conversation) => (
+            <button
+              key={conversation.id}
+              className={`nav-item history-item ${
+                activeConversationId === conversation.id ? 'active' : ''
+              }`}
+              onClick={() => onSelectConversation(conversation.id)}
+              title={conversation.title}
+            >
+              <MessageSquare size={17} />
+              <span>{conversation.title}</span>
+            </button>
+          ))
+        )}
       </div>
 
-      {/* Bottom navigation */}
       <div className="sidebar-bottom">
         <button className="nav-item">
           <Settings size={18} />
@@ -80,7 +100,6 @@ function Sidebar({ onNewChat }: SidebarProps) {
           <ChevronDown size={16} />
         </div>
       </div>
-
     </aside>
   )
 }

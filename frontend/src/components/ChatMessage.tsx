@@ -1,5 +1,6 @@
 
 import { Bot, User } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 
 interface ChatMessageProps {
   role: 'user' | 'assistant'
@@ -20,7 +21,13 @@ function ChatMessage({ role, content }: ChatMessageProps) {
           {isUser ? 'You' : 'NOVA'}
         </span>
 
-        <p>{content}</p>
+        <div className="message-text">
+          {isUser ? (
+            <p>{content}</p>
+          ) : (
+            <ReactMarkdown>{content}</ReactMarkdown>
+          )}
+        </div>
       </div>
     </div>
   )
